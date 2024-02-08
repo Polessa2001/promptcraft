@@ -1,6 +1,6 @@
 import Prompt from "@models/prompt";
 import { connectToDB } from "@utils/database";
-
+console.log('HOLAAAAAA')
 export const GET = async (request, { params }) => {
     try {
         await connectToDB()
@@ -41,6 +41,7 @@ export const PATCH = async (request, { params }) => {
 };
 
 export const DELETE = async (request, { params }) => {
+    console.log('HOLAAAAAA')
     console.log(params)
     try {
         await connectToDB();
