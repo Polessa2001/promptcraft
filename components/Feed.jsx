@@ -21,6 +21,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
   const { data: session } = useSession();
+  console.log(session)
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -36,15 +37,15 @@ const Feed = () => {
         const data = await response.json();
   
         setAllPosts(data);
+        console.log(allPosts);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-  
-    console.log(allPosts);
-  
+    
     fetchPosts();
-  }, [session]);
+  }, []);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
