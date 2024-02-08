@@ -38,9 +38,10 @@ const MyProfile = () => {
       try {
         await fetch(`/api/prompt/${post._id}`, {
           method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          body: JSON.stringify({
+            prompt: post.prompt,
+            tag: post.tag,
+          }),
         });
 
         const filteredPosts = myPosts.filter((item) => item._id !== post._id);

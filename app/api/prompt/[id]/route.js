@@ -50,7 +50,6 @@ export const DELETE = async (request, { params }) => {
 
         return new Response("Prompt deleted successfully", { status: 200 });
     } catch (error) {
-        console.log('DELETE endpoint hitttt');
         return new Response("Error deleting prompt", { status: 500 });
     }
 };
