@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from 'react'
 import Form from "@components/Form";
+import { Suspense } from 'react'
 
-const UpdatePrompt = () => {
+const UpdatePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const promptId = searchParams.get("id");
@@ -53,7 +53,6 @@ const UpdatePrompt = () => {
   };
 
   return (
-    <Suspense>
       <Form
         type='Edit'
         post={post}
@@ -61,8 +60,15 @@ const UpdatePrompt = () => {
         submitting={submitting}
         handleSubmit={updatePrompt}
       />
-    </Suspense>
   );
 };
+
+const UpdatePrompt = () => {
+  return (
+    <Suspense>
+      <UpdatePage />
+    </Suspense>
+  )
+}
 
 export default UpdatePrompt;
