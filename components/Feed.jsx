@@ -25,11 +25,19 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   useEffect(() => {
+    console.log("Effect is running on the client side");
     const fetchPosts = async () => {
-        const response = await fetch("/api/prompt");
+      try {
+        const response = await fetch(`/api/prompt?${Date.now()}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
-        setAllPosts(data);
         console.log(data);
+        setAllPosts(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     
     fetchPosts();
@@ -79,14 +87,7 @@ const Feed = () => {
       </form>
 
       {/* All Prompts */}
-      {searchText ? (
-        <PromptCardList
-          data={searchedResults}
-          handleTagClick={handleTagClick}
-        />
-      ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
-      )}
+      <PromptCardList data={searchText ? searchedResults : allPosts} handleTagClick={handleTagClick} />
     </section>
   );
 };
