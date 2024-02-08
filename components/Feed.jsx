@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
@@ -19,27 +20,20 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
+  const fetchPosts = async () => {
+    const response = await fetch("/api/prompt");
+    const data = await response.json();
+
+    setAllPosts(data);
+  };
+
   useEffect(() => {
-    console.log("Effect is running on the client side");
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch(`/api/prompt?${Date.now()}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log(data);
-        setAllPosts(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    
     fetchPosts();
   }, []);
 
@@ -87,7 +81,14 @@ const Feed = () => {
       </form>
 
       {/* All Prompts */}
-      <PromptCardList data={searchText ? searchedResults : allPosts} handleTagClick={handleTagClick} />
+      {searchText ? (
+        <PromptCardList
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
+      ) : (
+        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+      )}
     </section>
   );
 };
