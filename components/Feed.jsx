@@ -29,23 +29,15 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      try {
         const response = await fetch("/api/prompt");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
         const data = await response.json();
-  
         setAllPosts(data);
-        console.log(allPosts);
         console.log(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+        console.log(allPosts);
     };
     
-    fetchPosts();
-  }, []);
+    if (session?.expires) fetchPosts();
+  }, [session?.expires]);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
