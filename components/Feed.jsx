@@ -1,10 +1,11 @@
 "use client";
-
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
+  const { data: session } = useSession();
   return (
     <div className='mt-16 prompt_layout'>
       {data.map((post) => (
@@ -28,15 +29,23 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("/api/prompt");
-      const data = await response.json();
+      try {
+        const response = await fetch("/api/prompt");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
   
-      setAllPosts(data);
+        setAllPosts(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
-    console.log(allPosts)
-
+  
+    console.log(allPosts);
+  
     fetchPosts();
-  }, []);
+  }, [session]);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
