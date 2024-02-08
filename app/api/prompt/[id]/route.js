@@ -1,6 +1,6 @@
 import Prompt from "@models/prompt";
 import { connectToDB } from "@utils/database";
-console.log('HOLAAAAAA')
+
 export const GET = async (request, { params }) => {
     try {
         await connectToDB()
@@ -41,8 +41,8 @@ export const PATCH = async (request, { params }) => {
 };
 
 export const DELETE = async (request, { params }) => {
-    console.log('HOLAAAAAA')
-    console.log(params)
+    console.log('DELETE endpoint hit');
+    console.log(params);
     try {
         await connectToDB();
         // Find the prompt by ID and remove it
@@ -50,6 +50,7 @@ export const DELETE = async (request, { params }) => {
 
         return new Response("Prompt deleted successfully", { status: 200 });
     } catch (error) {
+        console.log('DELETE endpoint hitttt');
         return new Response("Error deleting prompt", { status: 500 });
     }
 };

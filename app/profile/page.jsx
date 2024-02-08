@@ -36,8 +36,11 @@ const MyProfile = () => {
     if (hasConfirmed) {
       console.log(post._id)
       try {
-        await fetch(`/api/prompt/:${post._id.toString()}`, {
-          method: 'DELETE'
+        await fetch(`/api/prompt/${post._id.toString()}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
 
         const filteredPosts = myPosts.filter((item) => item._id !== post._id);
