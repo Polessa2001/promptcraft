@@ -26,18 +26,16 @@ const Feed = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
-  const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
-    const data = await response.json();
-
-    setAllPosts(data);
-  };
-
   useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await fetch("/api/prompt");
+      const data = await response.json();
+  
+      setAllPosts(data);
+    };
+    console.log(posts)
+    
     fetchPosts();
-    const intervalId = setInterval(fetchPosts, 60000);
-
-    return () => clearInterval(intervalId);
   }, []);
 
   const filterPrompts = (searchtext) => {
