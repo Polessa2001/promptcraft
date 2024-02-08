@@ -1,25 +1,10 @@
-"use client";
-
 import { useState, useEffect } from "react";
-
 import PromptCard from "./PromptCard";
-
-const PromptCardList = ({ data, handleTagClick }) => {
-  return (
-    <div className='mt-16 prompt_layout'>
-      {data.map((post) => (
-        <PromptCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
-      ))}
-    </div>
-  );
-};
+import PromptCardList from "./PromptCardList";
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Added loading state
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -27,10 +12,18 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
-    const data = await response.json();
-
-    setAllPosts(data);
+    try {
+      const response = await fetch("/api/prompt");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setAllPosts(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false); // Set loading to false when data fetching is complete
+    }
   };
 
   useEffect(() => {
@@ -38,7 +31,7 @@ const Feed = () => {
   }, []);
 
   const filterPrompts = (searchtext) => {
-    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+    const regex = new RegExp(searchtext, "i");
     return allPosts.filter(
       (item) =>
         regex.test(item.creator.username) ||
@@ -51,7 +44,6 @@ const Feed = () => {
     clearTimeout(searchTimeout);
     setSearchText(e.target.value);
 
-    // debounce method
     setSearchTimeout(
       setTimeout(() => {
         const searchResult = filterPrompts(e.target.value);
@@ -80,14 +72,15 @@ const Feed = () => {
         />
       </form>
 
-      {/* All Prompts */}
-      {searchText ? (
+      {/* Display loading message while data is being fetched */}
+      {isLoading && <p className="font-inter tex-sm green_gradient cursor-pointer">Loading...</p>}
+
+      {/* Render the PromptCardList only when not loading */}
+      {!isLoading && (
         <PromptCardList
-          data={searchedResults}
+          data={searchText ? searchedResults : allPosts}
           handleTagClick={handleTagClick}
         />
-      ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
       )}
     </section>
   );
