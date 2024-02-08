@@ -37,11 +37,7 @@ const MyProfile = () => {
       console.log(post._id)
       try {
         await fetch(`/api/prompt/${post._id}`, {
-          method: 'DELETE',
-          body: JSON.stringify({
-            prompt: post.prompt,
-            tag: post.tag,
-          }),
+          method: 'DELETE'
         });
 
         const filteredPosts = myPosts.filter((item) => item._id !== post._id);
