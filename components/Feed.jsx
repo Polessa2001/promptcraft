@@ -33,8 +33,8 @@ const Feed = () => {
   
       setAllPosts(data);
     };
-    console.log(posts)
-    
+    console.log(allPosts)
+
     fetchPosts();
   }, []);
 
