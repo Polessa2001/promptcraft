@@ -87,7 +87,7 @@ const Feed = () => {
       </form>
 
       {/* Display loading message while data is being fetched */}
-      {isLoading && <p className="font-inter tex-sm green_gradient cursor-pointer">Loading...</p>}
+      {isLoading && <p className="text-xl text-gray-900 dark:text-white mt-3">Loading...</p>}
 
       {/* Render the PromptCardList only when not loading */}
       {!isLoading && (

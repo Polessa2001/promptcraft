@@ -12,7 +12,7 @@ const Home = () => {
         </h1>
         <p className="desc text-center">
           PromptCraft is a contemporary, 
-          open-source AI prompting tool designed for the modern world, 
+          open-source prompting tool designed for the modern world, 
           enabling users to explore, generate, 
           and collaborate on creative projects.
         </p>
